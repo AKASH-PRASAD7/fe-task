@@ -56,3 +56,10 @@ export interface Product {
   //   thumbnail: string;
   //   images: string[];
 }
+
+export interface ProductResponse {
+  products: AllProduct[];
+  total: number;
+  skip: number;
+  limit: number;
+}

@@ -1,4 +1,4 @@
-import type { Product } from "@/types";
+import type { Product, ProductResponse } from "@/types";
 import api from "@/api";
 import { handleAPIError } from "@/lib/errors";
 
@@ -9,17 +9,23 @@ export const getProducts = async (
     sortBy?: string;
     order?: "asc" | "desc";
   } = {},
-): Promise<Product[]> => {
+): Promise<ProductResponse> => {
   try {
-    const res = await api.get<{ products: Product[] }>(
+    const res = await api.get<{ products: ProductResponse }>(
       `/products?limit=${params.limit}&skip=${params.skip}`,
     );
-    return res.data.products?.map((product) => ({
-      id: product.id,
-      title: product.title,
-      category: product.category,
-      price: product.price,
-    }));
+
+    const result = {
+      ...res.data,
+      products: res.data.products?.map((product: Product) => ({
+        id: product.id,
+        title: product.title,
+        category: product.category,
+        price: product.price,
+      })),
+    };
+
+    return result;
   } catch (err) {
     throw handleAPIError(err);
   }
