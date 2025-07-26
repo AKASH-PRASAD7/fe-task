@@ -11,8 +11,15 @@ export const getProducts = async (
   } = {},
 ): Promise<Product[]> => {
   try {
-    const res = await api.get<{ products: Product[] }>("/products", { params });
-    return res.data.products;
+    const res = await api.get<{ products: Product[] }>(
+      `/products?limit=${params.limit}&skip=${params.skip}`,
+    );
+    return res.data.products?.map((product) => ({
+      id: product.id,
+      title: product.title,
+      category: product.category,
+      price: product.price,
+    }));
   } catch (err) {
     throw handleAPIError(err);
   }
@@ -40,7 +47,12 @@ export const searchProducts = async (
     const res = await api.get<{ products: Product[] }>("/products/search", {
       params: { q: query, ...params },
     });
-    return res.data.products;
+    return res.data.products?.map((product) => ({
+      id: product.id,
+      title: product.title,
+      category: product.category,
+      price: product.price,
+    }));
   } catch (err) {
     throw handleAPIError(err);
   }

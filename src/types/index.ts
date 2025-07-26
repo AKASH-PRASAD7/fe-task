@@ -19,7 +19,7 @@ export interface ProductMeta {
   qrCode: string;
 }
 
-export interface Product {
+export interface AllProduct {
   id: number;
   title: string;
   description: string;
@@ -42,4 +42,17 @@ export interface Product {
   meta: ProductMeta;
   images: string[];
   thumbnail: string;
+}
+
+export interface Product {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  //   discountPercentage: number;
+  //   rating: number;
+  //   stock: number;
+  //   brand: string;
+  //   thumbnail: string;
+  //   images: string[];
 }
