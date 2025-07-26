@@ -2,9 +2,11 @@
 import { useProducts } from "@/hooks/useProduct";
 import React from "react";
 import { DataTable } from "./data-table";
-import { type PaginationState } from "@tanstack/react-table";
+import { type PaginationState, type Row } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 
 const Table = () => {
+  const router = useRouter();
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -31,6 +33,12 @@ const Table = () => {
     [products],
   );
 
+  const handleRowClick = (row: Row<(typeof products)[0]>) => {
+    if (row.id) {
+      router.push(`/product/${row.id}`);
+    }
+  };
+
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -43,6 +51,7 @@ const Table = () => {
         pageCount={pageCount}
         pagination={pagination}
         onPaginationChange={setPagination}
+        onRowClick={handleRowClick}
       />
     </main>
   );
