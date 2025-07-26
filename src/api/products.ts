@@ -63,3 +63,32 @@ export const searchProducts = async (
     throw handleAPIError(err);
   }
 };
+
+export const createProduct = async (data: Product): Promise<Product> => {
+  try {
+    const res = await api.post<Product>("/products/add", data);
+    return res.data;
+  } catch (err) {
+    throw handleAPIError(err);
+  }
+};
+
+export const updateProduct = async (
+  id: number,
+  data: Partial<Product>,
+): Promise<Product> => {
+  try {
+    const res = await api.patch<Product>(`/products/${id}`, data);
+    return res.data;
+  } catch (err) {
+    throw handleAPIError(err);
+  }
+};
+
+export const deleteProduct = async (id: number): Promise<void> => {
+  try {
+    await api.delete(`/products/${id}`);
+  } catch (err) {
+    throw handleAPIError(err);
+  }
+};
