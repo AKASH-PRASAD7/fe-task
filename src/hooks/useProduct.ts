@@ -7,6 +7,7 @@ import {
 } from "@/api/products";
 import type { Product } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useProducts = (
   params: {
@@ -44,6 +45,10 @@ export const useCreateProduct = () => {
           };
         },
       );
+      toast.success("Product created successfully!");
+    },
+    onError: (error) => {
+      toast.error(`Failed to create product: ${error.message}`);
     },
   });
 };
@@ -63,11 +68,22 @@ export const useUpdateProduct = () => {
           return {
             ...oldData,
             products: oldData.products.map((product) =>
-              product.id === updatedProduct.id ? updatedProduct : product,
+              product.id === updatedProduct.id
+                ? {
+                    title: updatedProduct.title,
+                    category: updatedProduct.category,
+                    price: updatedProduct.price,
+                    id: updatedProduct.id,
+                  }
+                : product,
             ),
           };
         },
       );
+      toast.success("Product updated successfully!");
+    },
+    onError: (error) => {
+      toast.error(`Failed to update product: ${error.message}`);
     },
   });
 };
@@ -94,6 +110,10 @@ export const useDeleteProduct = () => {
           };
         },
       );
+      toast.success("Product deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error(`Failed to delete product: ${error.message}`);
     },
   });
 };
