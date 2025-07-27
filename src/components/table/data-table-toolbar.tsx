@@ -59,7 +59,7 @@ export function DataTableToolbar<TData>({
       <Button
         variant="default"
         size="sm"
-        className="h-8 cursor-pointer px-3"
+        className="mx-4 h-8 cursor-pointer px-3"
         onClick={() => setPopoverOpen(!isPopoverOpen)}
       >
         <PlusIcon className="mr-2 h-4 w-4" />

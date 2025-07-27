@@ -48,7 +48,7 @@ const Table = () => {
 
   const handleRowClick = (row: Row<(typeof products)[0]>) => {
     if (row.id) {
-      router.push(`/product/${row.id}`);
+      router.push(`/product/${row.original.id}`);
     }
   };
 
@@ -56,7 +56,7 @@ const Table = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <main className="mb-12">
+    <main className="mb-12 px-6">
       <DataTable
         data={data?.products}
         columns={columns}

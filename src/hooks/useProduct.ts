@@ -2,6 +2,7 @@
 import {
   createProduct,
   deleteProduct,
+  getProductById,
   getProducts,
   updateProduct,
 } from "@/api/products";
@@ -20,6 +21,14 @@ export const useProducts = (
   return useQuery({
     queryKey: ["products", params],
     queryFn: () => getProducts(params),
+  });
+};
+
+export const useProductById = (id: number) => {
+  return useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getProductById(id),
+    enabled: !!id,
   });
 };
 
