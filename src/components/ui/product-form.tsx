@@ -8,12 +8,9 @@ import { Loader2, Tag } from "lucide-react";
 import {
   createProductSchema,
   updateProductSchema,
-  type CreateProductInput,
-  type UpdateProductInput,
   type Product,
-  type ProductFormValues,
 } from "@/lib/validators";
-import { productSchema } from "@/lib/validators";
+
 import {
   useCreateProduct,
   useUpdateProduct,
@@ -25,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,

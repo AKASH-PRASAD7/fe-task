@@ -31,11 +31,16 @@ const Table = () => {
     return { sortBy: sort.id, order: sort.desc ? "desc" : "asc" };
   }, [sorting]);
 
+  const order =
+    sortParams.order === "asc" || sortParams.order === "desc"
+      ? sortParams.order
+      : undefined;
+
   const { data, isPending, isError, error } = useProducts({
     limit: pagination.pageSize,
     skip: pagination.pageIndex * pagination.pageSize,
     sortBy: sortParams.sortBy,
-    order: sortParams.order,
+    order,
   });
 
   const products = data?.products ?? [];
@@ -55,7 +60,7 @@ const Table = () => {
 
         return {
           accessorKey: key,
-          header: ({ column }) => {
+          header: ({ column }: any) => {
             if (!isSortable) {
               return <>{key.charAt(0).toUpperCase() + key.slice(1)}</>;
             }

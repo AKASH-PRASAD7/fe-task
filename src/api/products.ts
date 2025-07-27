@@ -1,4 +1,4 @@
-import type { Product, ProductResponse } from "@/types";
+import type { AllProduct, Product, ProductResponse } from "@/types";
 import api from "@/api";
 import { handleAPIError } from "@/lib/errors";
 
@@ -29,7 +29,7 @@ export const getProducts = async (
     const queryString = queryParams.toString();
     const url = `/products${queryString ? `?${queryString}` : ""}`;
 
-    const res = await api.get<{ products: ProductResponse }>(url);
+    const res = await api.get<ProductResponse>(url);
 
     const result = {
       ...res.data,
@@ -50,34 +50,10 @@ export const getProducts = async (
   }
 };
 
-export const getProductById = async (id: number): Promise<Product> => {
+export const getProductById = async (id: number): Promise<AllProduct> => {
   try {
-    const res = await api.get<Product>(`/products/${id}`);
+    const res = await api.get<AllProduct>(`/products/${id}`);
     return res.data;
-  } catch (err) {
-    throw handleAPIError(err);
-  }
-};
-
-export const searchProducts = async (
-  query: string,
-  params: {
-    limit?: number;
-    skip?: number;
-    sortBy?: string;
-    order?: "asc" | "desc";
-  } = {},
-): Promise<Product[]> => {
-  try {
-    const res = await api.get<{ products: Product[] }>("/products/search", {
-      params: { q: query, ...params },
-    });
-    return res.data.products?.map((product) => ({
-      id: product.id,
-      title: product.title,
-      category: product.category,
-      price: product.price,
-    }));
   } catch (err) {
     throw handleAPIError(err);
   }

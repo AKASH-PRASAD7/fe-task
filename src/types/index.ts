@@ -54,8 +54,14 @@ export interface Product {
   brand: string;
 }
 
-export interface ProductResponse {
+export interface AllProductResponse {
   products: AllProduct[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+export interface ProductResponse {
+  products: Product[];
   total: number;
   skip: number;
   limit: number;

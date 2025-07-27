@@ -72,7 +72,7 @@ const ProductDetailPage = () => {
               )}
             </div>
             <div className="flex gap-2">
-              {product.images.map((img, index) => (
+              {product?.images?.map((img, index) => (
                 <button
                   key={index}
                   className={cn(
@@ -111,7 +111,7 @@ const ProductDetailPage = () => {
             <div className="flex items-center gap-4">
               <StarRating rating={product.rating} />
               <span className="text-muted-foreground text-sm">
-                {product.reviews.length} reviews
+                {product?.reviews?.length} reviews
               </span>
             </div>
 

@@ -13,16 +13,16 @@ const api = axios.create({
 });
 
 // Add a request interceptor
-api.interceptors.request.use(
-  (config: CustomAxiosRequestConfig) => {
-    const token = localStorage.getItem("token");
-    config.headers.Authorization = `Bearer ${token}`;
-    // config.headers["ngrok-skip-browser-warning"] = "69420";
+// api.interceptors.request.use(
+//   (config: CustomAxiosRequestConfig) => {
+//     const token = localStorage.getItem("token");
+//     config.headers.Authorization = `Bearer ${token}`;
+//     // config.headers["ngrok-skip-browser-warning"] = "69420";
 
-    return config;
-  },
-  (error: AxiosError) => Promise.reject(handleAPIError(error)),
-);
+//     return config;
+//   },
+//   (error: AxiosError) => Promise.reject(handleAPIError(error)),
+// );
 
 // Add a response interceptor
 api.interceptors.response.use(
@@ -52,7 +52,7 @@ api.interceptors.response.use(
     //     localStorage.setItem("token", token);
 
     //     originalRequest.headers.Authorization = `Bearer ${token}`;
-    //     return api(originalRequest); 
+    //     return api(originalRequest);
     //   } catch (error) {
     //     // Handle refresh token error or redirect to login
     //     toast.error("Session expired. Please login again.");

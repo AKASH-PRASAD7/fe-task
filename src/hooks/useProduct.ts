@@ -6,7 +6,7 @@ import {
   getProducts,
   updateProduct,
 } from "@/api/products";
-import type { Product } from "@/types";
+import type { Product, ProductResponse } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -18,7 +18,7 @@ export const useProducts = (
     order?: "asc" | "desc";
   } = {},
 ) => {
-  return useQuery({
+  return useQuery<ProductResponse, Error>({
     queryKey: ["products", params],
     queryFn: () => getProducts(params),
   });
