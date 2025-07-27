@@ -43,7 +43,7 @@ export function TagInput({
       e.preventDefault();
       addTag(inputValue);
     } else if (e.key === "Backspace" && inputValue === "") {
-      removeTag(value[value.length - 1] as string);
+      removeTag(value[value.length - 1] ?? "");
     }
   };
 
@@ -74,7 +74,7 @@ export function TagInput({
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder || "Add a tag..."}
+        placeholder={placeholder ?? "Add a tag..."}
         className="h-auto flex-1 border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
       />
     </div>

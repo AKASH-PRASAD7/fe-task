@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
-  GlobalFiltering,
   type PaginationState,
   type Row,
   type SortingState,
@@ -55,7 +54,6 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filters,
   pageCount,
   pagination,
   onPaginationChange,

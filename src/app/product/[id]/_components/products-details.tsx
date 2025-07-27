@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Bolt, CheckCircle, ShoppingCart, Tag } from "lucide-react";
+import { ArrowLeft, Bolt, CheckCircle, ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ProductDetailPage = () => {

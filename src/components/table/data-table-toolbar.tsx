@@ -7,19 +7,8 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { useState } from "react";
-import { Dialog } from "../ui/dialog";
 import ProductForm from "../ui/product-form";
 import { Modal } from "../ui/modal";
-
-interface FilterOption {
-  columnId: string;
-  title: string;
-  options: {
-    label: string;
-    value: string;
-    icon?: React.ComponentType<{ className?: string }>;
-  }[];
-}
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

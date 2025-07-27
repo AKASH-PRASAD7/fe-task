@@ -81,7 +81,7 @@ export const updateProduct = async (
   }
 };
 
-export const deleteProduct = async (id: number): Promise<Number> => {
+export const deleteProduct = async (id: number): Promise<number> => {
   try {
     await api.delete(`/products/${id}`);
     return id;

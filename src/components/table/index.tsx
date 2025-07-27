@@ -41,7 +41,9 @@ const Table = () => {
     order,
   });
 
-  const products = data?.products ?? [];
+  const products = useMemo(() => {
+    return data?.products ?? [];
+  }, [data]);
   const totalProducts = data?.total ?? 0;
 
   const pageCount = useMemo(() => {
@@ -51,7 +53,7 @@ const Table = () => {
   const columns = useMemo(() => {
     const sortableKeys = ["title", "price", "rating", "stock"];
 
-    const dynamicColumns = Object.keys(products[0] || {})
+    const dynamicColumns = Object.keys(products[0] ?? {})
       .filter((key) => key !== "tags")
       .map((key) => {
         const isSortable = sortableKeys.includes(key);
