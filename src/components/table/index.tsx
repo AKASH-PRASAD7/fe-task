@@ -14,6 +14,7 @@ import { DataTableRowActions } from "./data-table-row-actions";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { DataTableSkeleton } from "../ui/skeletal-loader-table";
 
 const Table = () => {
   const router = useRouter();
@@ -110,8 +111,18 @@ const Table = () => {
     }
   };
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isPending)
+    return (
+      <main className="mb-12 px-6">
+        <DataTableSkeleton columnCount={8} rowCount={pagination.pageSize} />
+      </main>
+    );
+  if (isError)
+    return (
+      <main className="flex h-96 items-center justify-center text-red-500">
+        Error: {error.message}
+      </main>
+    );
 
   return (
     <main className="mb-12 px-6">
