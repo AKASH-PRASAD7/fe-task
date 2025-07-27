@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Tag } from "lucide-react";
 
 import {
   createProductSchema,
@@ -25,11 +25,13 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { TagInput } from "./tag-input";
 
 interface ProductFormProps {
   type?: "create" | "edit" | "delete";
@@ -164,6 +166,45 @@ const ProductForm = ({
                 <FormLabel>Price</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="e.g., 999" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Tags Field */}
+          <TagInput
+            value={form.watch("tags") || []}
+            onChange={(tags) => form.setValue("tags", tags)}
+            placeholder="Add tags (press Enter or comma to add)"
+          />
+          {/* Rating Field */}
+          <FormField
+            control={form.control}
+            name="rating"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rating (0-5)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    placeholder="e.g., 4.5"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Brand Field */}
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Brand</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Apple" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

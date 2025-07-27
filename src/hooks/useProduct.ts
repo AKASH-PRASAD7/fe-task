@@ -38,18 +38,19 @@ export const useCreateProduct = () => {
     mutationFn: (newProduct: Product) => {
       return createProduct(newProduct);
     },
-    onSuccess: (newlyCreatedProduct) => {
+    onSuccess: (apiResponse, variables) => {
+      const newProductForCache = {
+        ...apiResponse,
+        ...variables,
+      };
+
       queryClient.setQueriesData<{ products: Product[]; total: number }>(
         { queryKey: ["products"] },
-
         (oldData) => {
-          if (!oldData) {
-            return { products: [newlyCreatedProduct], total: 1 };
-          }
-
+          if (!oldData) return;
           return {
             ...oldData,
-            products: [...oldData.products, newlyCreatedProduct],
+            products: [newProductForCache, ...oldData.products],
             total: oldData.total + 1,
           };
         },
@@ -68,22 +69,16 @@ export const useUpdateProduct = () => {
     mutationFn: (data: Product) => {
       return updateProduct(data.id, data);
     },
-    onSuccess: (updatedProduct) => {
+    onSuccess: (_apiResponse, variables) => {
       queryClient.setQueriesData<{ products: Product[]; total: number }>(
         { queryKey: ["products"] },
         (oldData) => {
-          if (!oldData) return { products: [updatedProduct], total: 1 };
-
+          if (!oldData) return;
           return {
             ...oldData,
             products: oldData.products.map((product) =>
-              product.id === updatedProduct.id
-                ? {
-                    title: updatedProduct.title,
-                    category: updatedProduct.category,
-                    price: updatedProduct.price,
-                    id: updatedProduct.id,
-                  }
+              product.id === variables.id
+                ? { ...product, ...variables }
                 : product,
             ),
           };

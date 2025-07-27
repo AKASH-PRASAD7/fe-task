@@ -10,7 +10,13 @@ export const createProductSchema = z.object({
   price: z.coerce
     .number({ invalid_type_error: "Price must be a valid number." })
     .positive({ message: "Price must be a positive number." }),
-  //   description: z.string().optional(),
+  brand: z.string().optional(),
+  rating: z.coerce
+    .number()
+    .min(0)
+    .max(5, "Rating must be between 0 and 5.")
+    .optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export const updateProductSchema = z.object({
@@ -31,7 +37,13 @@ export const updateProductSchema = z.object({
     .number({ invalid_type_error: "Price must be a valid number." })
     .positive({ message: "Price must be a positive number." })
     .optional(),
-  //   description: z.string().optional(),
+  brand: z.string().optional(),
+  rating: z.coerce
+    .number()
+    .min(0)
+    .max(5, "Rating must be between 0 and 5.")
+    .optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export const productSchema = z.object({

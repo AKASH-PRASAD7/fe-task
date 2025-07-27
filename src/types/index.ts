@@ -49,13 +49,9 @@ export interface Product {
   title: string;
   category: string;
   price: number;
-  //   discountPercentage: number;
   rating: number;
   tags: string[];
-  //   stock: number;
   brand: string;
-  //   thumbnail: string;
-  //   images: string[];
 }
 
 export interface ProductResponse {
