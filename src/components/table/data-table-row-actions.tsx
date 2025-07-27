@@ -18,6 +18,8 @@ import {
 import { useState } from "react";
 import ProductForm from "../ui/product-form";
 import { Modal } from "../ui/modal";
+import type { Row } from "@tanstack/react-table";
+import type { Product } from "@/types";
 
 interface LabelOption {
   label: string;
@@ -25,7 +27,7 @@ interface LabelOption {
 }
 
 interface DataTableRowActionsProps<TData extends { label?: string }> {
-  row: TData;
+  row: Row<TData>;
   labels?: LabelOption[];
   onDelete?: (task: TData) => void;
   onEdit?: (task: TData) => void;
@@ -43,6 +45,7 @@ export function DataTableRowActions<
 }: DataTableRowActionsProps<TData>) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [type, setType] = useState<"edit" | "delete">("edit");
+
   return (
     <>
       {isPopoverOpen && (
@@ -54,7 +57,7 @@ export function DataTableRowActions<
         >
           <ProductForm
             type={type}
-            initialData={row.original}
+            initialData={row.original as Partial<Product>}
             onSuccess={() => setPopoverOpen(false)}
           />
         </Modal>
@@ -75,7 +78,7 @@ export function DataTableRowActions<
             onClick={(e) => {
               e.stopPropagation();
               setPopoverOpen(true);
-              onEdit?.(row);
+              onEdit?.(row.original);
               setType("edit");
             }}
           >
@@ -84,15 +87,17 @@ export function DataTableRowActions<
           {/* <DropdownMenuItem>Make a copy</DropdownMenuItem>
         <DropdownMenuItem>Favorite</DropdownMenuItem> */}
 
-          {labels && typeof row.label === "string" && (
+          {labels && typeof row.original.label === "string" && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                   <DropdownMenuRadioGroup
-                    value={row.label}
-                    onValueChange={(value) => onLabelChange?.(row, value)}
+                    value={row.original.label}
+                    onValueChange={(value) =>
+                      onLabelChange?.(row.original, value)
+                    }
                   >
                     {labels.map((label) => (
                       <DropdownMenuRadioItem
@@ -113,7 +118,7 @@ export function DataTableRowActions<
             onClick={(e) => {
               e.stopPropagation();
               setPopoverOpen(true);
-              onDelete?.(row);
+              onDelete?.(row.original);
               setType("delete");
             }}
           >

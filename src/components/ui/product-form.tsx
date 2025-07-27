@@ -3,13 +3,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Tag } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-import {
-  createProductSchema,
-  updateProductSchema,
-  type Product,
-} from "@/lib/validators";
+import { createProductSchema, updateProductSchema } from "@/lib/validators";
 
 import {
   useCreateProduct,
@@ -28,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { TagInput } from "./tag-input";
+import type { Product } from "@/types";
 
 interface ProductFormProps {
   type?: "create" | "edit" | "delete";
@@ -42,9 +39,9 @@ const ProductForm = ({
 }: ProductFormProps) => {
   const isEditMode = type === "edit";
 
-  const form = useForm<Product>({
+  const form = useForm<any>({
     resolver: zodResolver(
-      isEditMode ? updateProductSchema : createProductSchema,
+      (isEditMode ? updateProductSchema : createProductSchema) as any,
     ),
     defaultValues: initialData,
   });

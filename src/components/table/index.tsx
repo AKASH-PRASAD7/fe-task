@@ -1,15 +1,13 @@
 "use client";
-import { useProducts, useUpdateProduct } from "@/hooks/useProduct";
+import { useProducts } from "@/hooks/useProduct";
 import React, { useMemo, useState } from "react";
 import { DataTable } from "./data-table";
 import {
-  type ColumnDef,
   type PaginationState,
   type Row,
   type SortingState,
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import type { Product } from "@/lib/validators";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
@@ -50,7 +48,7 @@ const Table = () => {
     return Math.ceil(totalProducts / pagination.pageSize);
   }, [totalProducts, pagination.pageSize]);
 
-  const columns = useMemo<ColumnDef<Product>[]>(() => {
+  const columns = useMemo(() => {
     const sortableKeys = ["title", "price", "rating", "stock"];
 
     const dynamicColumns = Object.keys(products[0] || {})
@@ -84,7 +82,7 @@ const Table = () => {
       {
         accessorKey: "tags",
         header: "Tags",
-        cell: ({ row }) => {
+        cell: ({ row }: any) => {
           const tags = row.getValue("tags") as string[];
 
           if (!tags || tags.length === 0) {
@@ -105,7 +103,7 @@ const Table = () => {
       {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
+        cell: ({ row }: any) => <DataTableRowActions row={row} />,
       },
     ];
   }, [products]);
