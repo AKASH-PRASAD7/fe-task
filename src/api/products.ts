@@ -11,17 +11,36 @@ export const getProducts = async (
   } = {},
 ): Promise<ProductResponse> => {
   try {
-    const res = await api.get<{ products: ProductResponse }>(
-      `/products?limit=${params.limit}&skip=${params.skip}`,
-    );
+    const queryParams = new URLSearchParams();
+
+    if (params.limit !== undefined) {
+      queryParams.append("limit", String(params.limit));
+    }
+
+    if (params.skip !== undefined) {
+      queryParams.append("skip", String(params.skip));
+    }
+
+    if (params.sortBy && params.order) {
+      queryParams.append("sortBy", params.sortBy);
+      queryParams.append("order", params.order);
+    }
+
+    const queryString = queryParams.toString();
+    const url = `/products${queryString ? `?${queryString}` : ""}`;
+
+    const res = await api.get<{ products: ProductResponse }>(url);
 
     const result = {
       ...res.data,
       products: res.data.products?.map((product: Product) => ({
         id: product.id,
         title: product.title,
+        brand: product.brand,
         category: product.category,
         price: product.price,
+        rating: product.rating,
+        tags: product.tags,
       })),
     };
 

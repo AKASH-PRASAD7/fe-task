@@ -51,14 +51,12 @@ const ProductForm = ({
     defaultValues: initialData,
   });
 
-  // Get mutation hooks for creating and updating
   const { mutate: createProduct, isPending: isCreating } = useCreateProduct();
   const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct();
   const { mutate: deleteProduct } = useDeleteProduct();
 
   const isProcessing = isCreating || isUpdating;
 
-  // Define the submit handler
   const onSubmit = (data: Product) => {
     if (isEditMode) {
       updateProduct(

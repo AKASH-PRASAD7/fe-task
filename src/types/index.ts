@@ -50,9 +50,10 @@ export interface Product {
   category: string;
   price: number;
   //   discountPercentage: number;
-  //   rating: number;
+  rating: number;
+  tags: string[];
   //   stock: number;
-  //   brand: string;
+  brand: string;
   //   thumbnail: string;
   //   images: string[];
 }

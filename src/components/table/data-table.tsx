@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  GlobalFiltering,
   type PaginationState,
   type Row,
   type SortingState,
@@ -17,7 +18,7 @@ import {
   getSortedRowModel,
 } from "@tanstack/react-table";
 import { useReactTable } from "@tanstack/react-table";
-
+import { useDebounce } from "@/hooks/useDebounce";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import {
@@ -47,6 +48,8 @@ interface DataTableProps<TData, TValue> {
   pagination: PaginationState;
   onPaginationChange: React.Dispatch<React.SetStateAction<PaginationState>>;
   onRowClick?: (row: Row<TData>) => void;
+  sorting: SortingState;
+  onSortingChange: React.Dispatch<React.SetStateAction<SortingState>>;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,6 +60,8 @@ export function DataTable<TData, TValue>({
   pagination,
   onPaginationChange,
   onRowClick,
+  sorting,
+  onSortingChange,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -64,23 +69,28 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState("");
+
+  const debouncedGlobalFilter = useDebounce(globalFilter, 300);
 
   const table = useReactTable({
     data,
     columns,
     pageCount: pageCount ?? -1,
     manualPagination: true,
+    manualSorting: true,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
       pagination,
+      globalFilter: debouncedGlobalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
+    onSortingChange: onSortingChange,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: onPaginationChange,
