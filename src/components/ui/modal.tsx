@@ -32,7 +32,10 @@ export const Modal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("sm:max-w-[425px]", className)}>
+      <DialogContent
+        onClick={(e) => e.stopPropagation()}
+        className={cn("sm:max-w-[425px]", className)}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

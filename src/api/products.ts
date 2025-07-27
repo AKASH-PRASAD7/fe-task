@@ -78,16 +78,18 @@ export const updateProduct = async (
   data: Partial<Product>,
 ): Promise<Product> => {
   try {
-    const res = await api.patch<Product>(`/products/${id}`, data);
+    const { id: _, ...payload } = data;
+    const res = await api.put<Product>(`/products/${id}`, payload);
     return res.data;
   } catch (err) {
     throw handleAPIError(err);
   }
 };
 
-export const deleteProduct = async (id: number): Promise<void> => {
+export const deleteProduct = async (id: number): Promise<Number> => {
   try {
     await api.delete(`/products/${id}`);
+    return id;
   } catch (err) {
     throw handleAPIError(err);
   }

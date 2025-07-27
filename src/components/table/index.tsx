@@ -1,9 +1,15 @@
 "use client";
-import { useProducts } from "@/hooks/useProduct";
+import { useProducts, useUpdateProduct } from "@/hooks/useProduct";
 import React from "react";
 import { DataTable } from "./data-table";
-import { type PaginationState, type Row } from "@tanstack/react-table";
+import {
+  type ColumnDef,
+  type PaginationState,
+  type Row,
+} from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
+import type { Product } from "@/lib/validators";
+import { DataTableRowActions } from "./data-table-row-actions";
 
 const Table = () => {
   const router = useRouter();
@@ -24,14 +30,21 @@ const Table = () => {
     return Math.ceil(totalProducts / pagination.pageSize);
   }, [totalProducts, pagination.pageSize]);
 
-  const columns = React.useMemo(
-    () =>
-      Object.keys(data?.products[0] || {}).map((key) => ({
-        accessorKey: key,
-        header: key.charAt(0).toUpperCase() + key.slice(1),
-      })),
-    [products],
-  );
+  const columns = React.useMemo<ColumnDef<Product>[]>(() => {
+    const dynamicColumns = Object.keys(products[0] || {}).map((key) => ({
+      accessorKey: key,
+      header: key.charAt(0).toUpperCase() + key.slice(1),
+    }));
+
+    return [
+      ...dynamicColumns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => <DataTableRowActions row={row} />,
+      },
+    ];
+  }, [products]);
 
   const handleRowClick = (row: Row<(typeof products)[0]>) => {
     if (row.id) {

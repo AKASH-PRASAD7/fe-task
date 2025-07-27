@@ -29,19 +29,14 @@ export const useCreateProduct = () => {
       return createProduct(newProduct);
     },
     onSuccess: (newlyCreatedProduct) => {
-      //add data to the cache at bootom of current page
       queryClient.setQueriesData<{ products: Product[]; total: number }>(
-        // This is a query filter. It will match all keys like ["products", {limit, skip}]
         { queryKey: ["products"] },
-        // This updater function receives the old data for each matching query
+
         (oldData) => {
           if (!oldData) {
-            // If for some reason there's no old data, do nothing
             return { products: [newlyCreatedProduct], total: 1 };
           }
 
-          // 2. Correct the data structure to access `oldData.products`
-          // 3. Add the newly created product to the end of the list
           return {
             ...oldData,
             products: [...oldData.products, newlyCreatedProduct],
@@ -59,8 +54,20 @@ export const useUpdateProduct = () => {
     mutationFn: (data: Product) => {
       return updateProduct(data.id, data);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+    onSuccess: (updatedProduct) => {
+      queryClient.setQueriesData<{ products: Product[]; total: number }>(
+        { queryKey: ["products"] },
+        (oldData) => {
+          if (!oldData) return { products: [updatedProduct], total: 1 };
+
+          return {
+            ...oldData,
+            products: oldData.products.map((product) =>
+              product.id === updatedProduct.id ? updatedProduct : product,
+            ),
+          };
+        },
+      );
     },
   });
 };
@@ -71,8 +78,22 @@ export const useDeleteProduct = () => {
     mutationFn: (id: number) => {
       return deleteProduct(id);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+
+    onSuccess: (deletedProduct) => {
+      queryClient.setQueriesData<{ products: Product[]; total: number }>(
+        { queryKey: ["products"] },
+        (oldData) => {
+          if (!oldData) return;
+
+          return {
+            ...oldData,
+            products: oldData.products.filter(
+              (product) => product.id !== deletedProduct,
+            ),
+            total: oldData.total - 1,
+          };
+        },
+      );
     },
   });
 };
