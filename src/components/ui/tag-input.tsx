@@ -43,7 +43,7 @@ export function TagInput({
       e.preventDefault();
       addTag(inputValue);
     } else if (e.key === "Backspace" && inputValue === "") {
-      removeTag(value[value.length - 1]);
+      removeTag(value[value.length - 1] as string);
     }
   };
 
